@@ -22,8 +22,12 @@ export class UserInfosComponent {
 
   updateUser() {
     this._updateUserServer.updateUser(this.userInfosForm.value as any).subscribe({
-      next: () => { },
-      error: () => { },
+      next: () => {
+        this.userInfosForm.setErrors({ 'update-success': true });
+      },
+      error: () => {
+        this.userInfosForm.setErrors({ 'update-error': true });
+      },
     });
   };
 }
