@@ -1,6 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { UpdateUserService } from '../../services/update-user.service';
+import { CreateUserService } from '../../services/create-user.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-user-infos',
@@ -18,10 +20,11 @@ export class UserInfosComponent {
     password: new FormControl(''),
   });
 
-  private readonly _updateUserServer = inject(UpdateUserService);
+  private readonly _updateUserService = inject(UpdateUserService);
+  private readonly _createUserService = inject(CreateUserService);
 
   updateUser() {
-    this._updateUserServer.updateUser(this.userInfosForm.value as any).subscribe({
+    this._updateUserService.updateUser(this.userInfosForm.value as any).subscribe({
       next: () => {
         this.userInfosForm.setErrors({ 'update-success': true });
       },
@@ -29,5 +32,23 @@ export class UserInfosComponent {
         this.userInfosForm.setErrors({ 'update-error': true });
       },
     });
+  };
+
+  createUser() {
+    this._createUserService.createUser(this.userInfosForm.value as any).subscribe({
+      next: () => {
+        this.userInfosForm.setErrors({ 'create-user-success': true });
+      },
+      error: (error: HttpErrorResponse) => {
+        const ALREADY_EXISTING_USER = error.status === 409;
+
+        if (ALREADY_EXISTING_USER) {
+          return this.userInfosForm.setErrors({ 'existing-user-error': true });
+        }
+
+        this.userInfosForm.setErrors({ 'create-user-error': true });
+      },
+    });
+
   };
 }
