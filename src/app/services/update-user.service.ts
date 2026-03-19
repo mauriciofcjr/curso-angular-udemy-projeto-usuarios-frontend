@@ -12,11 +12,11 @@ export class UpdateUserService {
 
   updateUser(userInfos: IUserRequest ) {
 
-    const headers = new HttpHeaders().set('authorization', 'Bearer ' + localStorage.getItem('token')!);
+    //const headers = new HttpHeaders().set('authorization', 'Bearer ' + localStorage.getItem('token')!);
 
-    return this._httpClient.put<IUserUpdateResponse>('http://localhost:3000/update-user', userInfos, {
-      headers,
-    }).pipe(
+    return this._httpClient.put<IUserUpdateResponse>('http://localhost:3000/update-user', 
+      userInfos
+    ).pipe(
       map((updateUserResponse) => {
         localStorage.setItem('token', updateUserResponse.token);
 

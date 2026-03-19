@@ -12,10 +12,10 @@ export class CreateUserService {
 
   createUser(newUser: IUserRequest) {
 
-    const headers = new HttpHeaders().set('authorization', 'Bearer ' + localStorage.getItem('token')!);
+    //const headers = new HttpHeaders().set('authorization', 'Bearer ' + localStorage.getItem('token')!);
 
-    return this._httpClient.post<IUserCreateResponse>('http://localhost:3000/create-user', newUser,
-      { headers }
+    return this._httpClient.post<IUserCreateResponse>('http://localhost:3000/create-user', 
+      newUser      
     );
   };
 };
